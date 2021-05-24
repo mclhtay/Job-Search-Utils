@@ -5,6 +5,7 @@ parser.add_argument(
     "--hour", "--h", help="enter annual wage to get hourly wage", type=int)
 parser.add_argument("--annual", "--a",
                     help="enter hourly wage to get annual wage", type=int)
+parser.add_argument("--mo", help="enter monthly wage", type=int)
 parser.add_argument(
     "--week", "--w", help="show weekly wage", action="store_true")
 parser.add_argument(
@@ -18,8 +19,16 @@ hourly = None
 args = parser.parse_args()
 
 
-if args.hour != None and args.annual != None:
-    print("Invalid choices, cannot have both hour and annual choices")
+count = 0
+if args.hour != None:
+    count += 1
+if args.annual != None:
+    count += 1
+if args.mo != None:
+    count += 1
+
+if count > 1:
+    print("Invalid choices, select only one among hour, annual and month")
     exit(0)
 
 if args.hour != None:
@@ -29,6 +38,11 @@ if args.annual != None:
     hourly = args.annual
     annual = hourly * 40 * 52
     output += f'Annual wage: {annual}\n'
+if args.mo != None:
+    hourly = args.mo / 4 / 40
+    annual = hourly * 52 * 40
+    output += f'Hourly wage: {hourly}\nAnnual wage: {annual}\n'
+
 
 if hourly == None:
     print("Error, you must enter wage")
